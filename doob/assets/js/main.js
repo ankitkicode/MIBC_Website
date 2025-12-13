@@ -426,25 +426,42 @@
         },
 
         darkLight: function () {
-            var styleMode = document.querySelector('meta[name="theme-style-mode"]').content;
-            var cookieKey = styleMode == 1 ? 'client_dark_mode_style_cookie' : 'client_light_mode_style_cookie';
-            if (Cookies.get(cookieKey) == 'dark') {
-                $('body').removeClass('active-light-mode');
-                $('body').addClass('active-dark-mode');
 
-            } else if( Cookies.get(cookieKey) == 'light') {
-                $('body').removeClass('active-dark-mode');
-                $('body').addClass('active-light-mode');
+    // force default light if no cookie
+    var cookieKey = 'client_theme_mode';
 
-            } else {
-                if(styleMode == 1){
-                    $('body').addClass('active-dark-mode');
-                } else{
-                    $('body').addClass('active-light-mode');
-                }
-                
-            }
-        },
+    function setLightMode() {
+        $('body').removeClass('active-dark-mode');
+        $('body').addClass('active-light-mode');
+        Cookies.set(cookieKey, 'light', { expires: 7 });
+    }
+
+    function setDarkMode() {
+        $('body').removeClass('active-light-mode');
+        $('body').addClass('active-dark-mode');
+        Cookies.set(cookieKey, 'dark', { expires: 7 });
+    }
+
+    // 1️⃣ Page load mode
+    var savedMode = Cookies.get(cookieKey);
+
+    if (savedMode === 'dark') {
+        setDarkMode();
+    } else {
+        // default = light
+        setLightMode();
+    }
+
+    // 2️⃣ Toggle button (example class)
+    $('.theme-toggle, .dark-light-toggle').on('click', function () {
+        if ($('body').hasClass('active-dark-mode')) {
+            setLightMode();
+        } else {
+            setDarkMode();
+        }
+    });
+},
+
     }
     doobJs.i();
 
