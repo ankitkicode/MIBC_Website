@@ -15,6 +15,7 @@
         },
         
         methods: function (e) {
+            doobJs.loadFontAwesome();   
             doobJs.smothScroll();
             doobJs.backToTopInit();
             doobJs.backToTopInit();
@@ -460,6 +461,21 @@
             setDarkMode();
         }
     });
+},
+loadFontAwesome: function () {
+    // Prevent duplicate loading
+    if (document.getElementById('font-awesome-cdn')) {
+        return;
+    }
+
+    var link = document.createElement('link');
+    link.id = 'font-awesome-cdn';
+    link.rel = 'stylesheet';
+    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css';
+    link.crossOrigin = 'anonymous';
+    link.referrerPolicy = 'no-referrer';
+
+    document.head.appendChild(link);
 },
 
     }
